@@ -9,6 +9,8 @@ import (
 	"os"
 )
 
+const URL string = "https://api.vultr.com/v1"
+const 
 type Client struct {
 	APIKey string
 	URL string
@@ -25,7 +27,7 @@ var returncodes = map[int]string {
   412 = "ERROR"
 }
 
-func NewClient(token string) (*Client, error) {
+func New(token string) (*Client, error) {
 	// If it exists, grab teh token from the environment
 	if apikey == "" {
 		apikey = os.Getenv("VULTR_KEY")
@@ -33,17 +35,16 @@ func NewClient(token string) (*Client, error) {
 
 	client := Client{
 		APIKey: apikey,
-		URL:   "https://api.vultr.com/v1",
 		Http:  http.DefaultClient,
 	} 
-  client.Params = 
+  client.Params = initParameters(client)
 	return &client, nil
 }
 
 // Creates a new request with the params
-func (c *Client) NewRequest(params map[string]string, method string, endpoint string) (*http.Request, error) {
+func (c *Client) Request(params map[string]string, action string,method string) (*http.Request, error) {
 	p := url.Values{}
-	u, err := url.Parse(c.URL + endpoint)
+	u, err := url.Parse(c.URL + action)
 
 	if err != nil {
 		return nil, fmt.Errorf("Error parsing base URL: %s", err)
