@@ -13,11 +13,12 @@ type parameter struct {
 }
 
 type Parameters struct {
-  Regions parameter `url:"/regions"`
-  Snapshosts parameter `url:"/snapshots"`
-  Images parameter `url:"/images"`
-  Plans parameter `url:"/plans"`
-  Sizes parameter `url:"/sizes"`
+  Regions     parameter `url:"regions        id:"DCID"        name:"name"`
+  Snapshosts  parameter `url:"snapshots"     id:"SNAPSHOTID"  name:"description"`
+  Images      parameter `url:"images"        id:"IMAGEID"     name:"name"`
+  Plans       parameter `url:"plans"         id:"VPSPLANID"   name:"name"`
+  Scripts     parameter `url:"startupscript" id:"SCRIPTID"    name:"name"`
+  OS          parameter `url:"os"            id:"OSID"        name:"name"`
 }
 
 func initParameters(Client client) Parameters {
@@ -29,7 +30,8 @@ func initParameters(Client client) Parameters {
     name = p_type.Field(i).Name
     action = p_type.Field(i).Tag.get("url")
     fmt.Printf("%d: %s %s",i,name,tag)
-    client.Request(nil, "GET", fmt.SprintF("/%s/list", url))
+    data = client.Request(nil, "GET", fmt.SprintF("/%s/list", url))
+    // Parse data to get id and name colmn. Note that it's a hash of hashes, so first key is id and then ID opens for something more
   }
   return p
 }
