@@ -43,7 +43,7 @@ type CreateServer struct {
 }
 func (c *Client) CreateOpts() CreateServer {
   opts := CreateServer{}
-  opts.Ipv6 = true
+  opts.IpV6 = true
   opts.PrivateNet = true
   return opts
 }
@@ -88,7 +88,7 @@ func (c *Client) CreateServer(opts *CreateServer) (string,error) {
   osOptions := 0
   if (opts.Os != "") { osOptions++ }
   if (opts.Snapshot != "") { osOptions++ }
-  if (opts.IpXeUrl != "") { osOptions++ }
+  if (opts.IpxeUrl != "") { osOptions++ }
   if osOptions>1 {
     return "",fmt.Errorf("OS, Snapshot and Ixpe parameters cannot be combined")
   }
