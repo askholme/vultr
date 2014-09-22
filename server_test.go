@@ -42,9 +42,9 @@ var getResponses = testutil.ResponseMap{
 func (s *S) Test_CreateServer_1(c *C) {
   testServer.ResponseMap(2,createResponses)
   opts := s.client.CreateOpts()
-  opts.region = "New Jersey"
-  opts.plan = "Starter"
-  opts.os = "Ubuntu 12.04 i386"
+  opts.Region = "New Jersey"
+  opts.Plan = "Starter"
+  opts.Os = "Ubuntu 12.04 i386"
   id,err := s.client.CreateServer(&opts)
   reqs := testServer.WaitRequests(2)
   c.Assert(err, IsNil)
@@ -56,9 +56,9 @@ func (s *S) Test_CreateServer_1(c *C) {
 func (s *S) Test_CreateServer_2(c *C) {
   testServer.ResponseMap(2,createResponses)
   opts := s.client.CreateOpts()
-  opts.region = "New Jersey"
-  opts.plan = "Basic"
-  opts.os = "Ubuntu 12.04 i386"
+  opts.Region = "New Jersey"
+  opts.Plan = "Basic"
+  opts.Os = "Ubuntu 12.04 i386"
   _,err := s.client.CreateServer(&opts)
   c.Assert(err, ErrorMatches, ".*not available in region.*")
 }
