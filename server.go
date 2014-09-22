@@ -37,14 +37,14 @@ type CreateServer struct {
   Os          string
   Snapshot    string
   IpV6        bool
-  Private_net bool
+  PrivateNet  bool
   Name        string
   IpxeUrl     string
 }
 func (c *Client) CreateOpts() CreateServer {
   opts := CreateServer{}
-  opts.ipv6 = true
-  opts.private_net = true
+  opts.Ipv6 = true
+  opts.PrivateNet = true
   return opts
 }
 func (c *Client) TestRegionPlan(region_id string,plan_id string) (bool) {
@@ -88,7 +88,7 @@ func (c *Client) CreateServer(opts *CreateServer) (string,error) {
   osOptions := 0
   if (opts.Os != "") { osOptions++ }
   if (opts.Snapshot != "") { osOptions++ }
-  if (opts.IxpeUrl != "") { osOptions++ }
+  if (opts.IpXeUrl != "") { osOptions++ }
   if osOptions>1 {
     return "",fmt.Errorf("OS, Snapshot and Ixpe parameters cannot be combined")
   }
@@ -101,7 +101,7 @@ func (c *Client) CreateServer(opts *CreateServer) (string,error) {
   } else if opts.IpxeUrl != "" {
     // tests for this and snapshot handling would be good
     params["ipxe_chain_url"] = opts.IpxeUrl
-    params["OSID"] = c.Params.getId("os","Custom")
+    params["OSID"],err = c.Params.getId("os","Custom")
   } else {
     params["OSID"],err = c.Params.getId("os",opts.Os)
   }
@@ -115,7 +115,7 @@ func (c *Client) CreateServer(opts *CreateServer) (string,error) {
     params["enable_private_network"] = "yes"
   }
   if opts.Name != "" {
-    params["label"] = opts.name
+    params["label"] = opts.Name
   }
   resp,err := c.RequestMap(params,"/server/create","POST")
   if err != nil {
