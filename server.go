@@ -32,13 +32,14 @@ type Server struct {
   KVMurl        string  `json:"kvm_url"`            
 }
 type CreateServer struct {
-  region      string
-  plan        string
-  os          string
-  snapshot    string
-  ipv6        bool
-  private_net bool
-  name        string
+  Region      string
+  Plan        string
+  Os          string
+  Snapshot    string
+  IpV6        bool
+  Private_net bool
+  Name        string
+  IpxeUrl     string
 }
 func (c *Client) CreateOpts() CreateServer {
   opts := CreateServer{}
@@ -73,32 +74,47 @@ func (c *Client) CreateServer(opts *CreateServer) (string,error) {
   params := make(map[string]string)
   // the get id function handles conversion to Id if needed
   var err error
-  params["DCID"],err = c.Params.getId("region",opts.region)
+  params["DCID"],err = c.Params.getId("region",opts.Region)
   if err != nil {
     return "",err
   }
-  params["VPSPLANID"],err = c.Params.getId("plan",opts.plan)
+  params["VPSPLANID"],err = c.Params.getId("plan",opts.Plan)
   if err != nil {
     return "",err
   }
   if !c.TestRegionPlan(params["DCID"],params["VPSPLANID"]) {
-    return "",fmt.Errorf("Plan %s not available in region %s",opts.plan,opts.region)
+    return "",fmt.Errorf("Plan %s not available in region %s",opts.Plan,opts.Region)
   }
-  if opts.snapshot != "" {
-    params["SNAPSHOTID"],err = c.Params.getId("snapshot",opts.snapshot)
+  osOptions := 0
+  if (opts.Os != "") { osOptions++ }
+  if (opts.Snapshot != "") { osOptions++ }
+  if (opts.IxpeUrl != "") { osOptions++ }
+  if osOptions>1 {
+    return "",fmt.Errorf("OS, Snapshot and Ixpe parameters cannot be combined")
+  }
+  if opts.Snapshot != "" {
+    params["SNAPSHOTID"],err = c.Params.getId("snapshot",opts.Snapshot)
+    if err != nil {
+      return "",err
+    }
+    params["OSID"],err = c.Params.getId("os","Snapshot")
+  } else if opts.IpxeUrl != "" {
+    // tests for this and snapshot handling would be good
+    params["ipxe_chain_url"] = opts.IpxeUrl
+    params["OSID"] = c.Params.getId("os","Custom")
   } else {
-    params["OSID"],err = c.Params.getId("os",opts.os)
+    params["OSID"],err = c.Params.getId("os",opts.Os)
   }
   if err != nil {
     return "",err
   }
-  if opts.ipv6 {
+  if opts.IpV6 {
     params["enable_ipv6"] = "yes"
   }
-  if opts.private_net {
+  if opts.PrivateNet {
     params["enable_private_network"] = "yes"
   }
-  if opts.name != "" {
+  if opts.Name != "" {
     params["label"] = opts.name
   }
   resp,err := c.RequestMap(params,"/server/create","POST")
