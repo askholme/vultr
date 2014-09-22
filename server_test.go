@@ -38,7 +38,45 @@ var getResponses = testutil.ResponseMap{
           "kvm_url": "https://my.vultr.com/subs/novnc/api.php?data=eawxFVZw2mXnhGUV"
       }
     }`)}
-
+var v4Responses = testutil.ResponseMap{
+  "/v1/server/list_ipv4": makeResp(`{
+          "576965": [
+              {
+                  "ip": "123.123.123.123",
+                  "netmask": "255.255.255.248",
+                  "gateway": "123.123.123.1",
+                  "type": "main_ip",
+                  "reverse": "123.123.123.123.example.com"
+              },
+              {
+                  "ip": "123.123.123.124",
+                  "netmask": "255.255.255.248",
+                  "gateway": "123.123.123.1",
+                  "type": "secondary_ip",
+                  "reverse": "123.123.123.124.example.com"
+              },
+              {
+                  "ip": "10.99.0.10",
+                  "netmask": "255.255.0.0",
+                  "gateway": "",
+                  "type": "private",
+                  "reverse": ""
+              }
+          ]
+      }`)}
+var v6Responses = testutil.ResponseMap{
+      "/v1/server/reverse_list_ipv6": makeResp(`{
+    "576965": [
+        {
+            "ip": "2001:DB8:1000::101",
+            "reverse": "host1.example.com"
+        },
+        {
+            "ip": "2001:DB8:1000::102",
+            "reverse": "host2.example.com"
+        }
+    ]
+}`)}
 func (s *S) Test_CreateServer_1(c *C) {
   testServer.ResponseMap(2,createResponses)
   opts := s.client.CreateOpts()
@@ -66,11 +104,20 @@ func (s *S) Test_CreateServer_2(c *C) {
 func (s *S) Test_GetServer(c *C) {
   testServer.ResponseMap(1,getResponses)
   server,err := s.client.GetServer("576965")
-  if err != nil{
-    panic(err)
-  }
   c.Assert(err,IsNil)
   c.Assert(server,Not(IsNil))
   c.Assert(server.Ram,Equals,"4096 MB")
   c.Assert(server.PrivateIP,Equals,"10.99.0.10")
+}
+func (s *S) Test_GetIpV4(c *C) {
+  testServer.ResponseMap(1,v4Responses)
+  data,err := s.client.GetServerIpV4Reverse("576965")
+  c.Assert(err,IsNil)
+  c.Assert(data["123.123.123.124"],Equals,"123.123.123.124.example.com")
+}
+func (s *S) Test_GetIpV6(c *C) {
+  testServer.ResponseMap(1,v6Responses)
+  data,err := s.client.GetServerIpV6Reverse("576965")
+  c.Assert(err,IsNil)
+  c.Assert(data["2001:DB8:1000::102"],Equals,"host2.example.com")
 }

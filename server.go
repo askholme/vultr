@@ -31,6 +31,10 @@ type Server struct {
   Power         string  `json:"power_status"`
   KVMurl        string  `json:"kvm_url"`            
 }
+type ReverseList struct {
+  Ip      string `json:"ip"`
+  Reverse string `json:"reverse"`
+}
 type CreateServer struct {
   Region      string
   Plan        string
@@ -188,4 +192,35 @@ func (c *Client) SetServerLabel(id string,label string) (error) {
   params["label"] = label
   _, err := c.RequestStr(params,"/server/label_set","POST")
   return err
+}
+func (c *Client) HaltServer(id string) (error) {
+  params := make(map[string]string)
+  params["SUBID"] = id
+  _, err := c.RequestStr(params,"/server/halt","POST")
+  return err
+}
+
+func (c *Client) getServerReverse(id string,url string) (map[string]string,error) {
+  params := make(map[string]string)
+  params["SUBID"] = id
+  requestData := make(map[string][]ReverseList)
+  err := c.RequestInterface(params,url,"POST",&requestData)
+  if err != nil {
+    return nil,err
+  }
+  out := make(map[string]string)
+  for searchid,data := range requestData {
+    if id==searchid {
+      for _,revList := range data {
+        out[revList.Ip] = revList.Reverse
+      }
+    }
+  }
+  return out,nil
+}
+func (c *Client) GetServerIpV6Reverse(id string) (map[string]string, error) {
+  return c.getServerReverse(id,"/server/reverse_list_ipv6")
+}
+func (c *Client) GetServerIpV4Reverse(id string) (map[string]string, error) {
+  return c.getServerReverse(id,"/server/list_ipv4")
 }
