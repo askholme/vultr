@@ -1,2 +1,4 @@
 language: go
 install: go get -t
+notifications:
+  email: false
