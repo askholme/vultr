@@ -78,11 +78,11 @@ func (c *Client) CreateServer(opts *CreateServer) (string,error) {
   params := make(map[string]string)
   // the get id function handles conversion to Id if needed
   var err error
-  params["DCID"],err = c.Params.getId("region",opts.Region)
+  params["DCID"],err = c.Params.GetId("region",opts.Region)
   if err != nil {
     return "",err
   }
-  params["VPSPLANID"],err = c.Params.getId("plan",opts.Plan)
+  params["VPSPLANID"],err = c.Params.GetId("plan",opts.Plan)
   if err != nil {
     return "",err
   }
@@ -97,17 +97,17 @@ func (c *Client) CreateServer(opts *CreateServer) (string,error) {
     return "",fmt.Errorf("OS, Snapshot and Ixpe parameters cannot be combined")
   }
   if opts.Snapshot != "" {
-    params["SNAPSHOTID"],err = c.Params.getId("snapshot",opts.Snapshot)
+    params["SNAPSHOTID"],err = c.Params.GetId("snapshot",opts.Snapshot)
     if err != nil {
       return "",err
     }
-    params["OSID"],err = c.Params.getId("os","Snapshot")
+    params["OSID"],err = c.Params.GetId("os","Snapshot")
   } else if opts.IpxeUrl != "" {
     // tests for this and snapshot handling would be good
     params["ipxe_chain_url"] = opts.IpxeUrl
-    params["OSID"],err = c.Params.getId("os","Custom")
+    params["OSID"],err = c.Params.GetId("os","Custom")
   } else {
-    params["OSID"],err = c.Params.getId("os",opts.Os)
+    params["OSID"],err = c.Params.GetId("os",opts.Os)
   }
   if err != nil {
     return "",err

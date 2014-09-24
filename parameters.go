@@ -19,7 +19,7 @@ func (p *Parameters) getParam(paramname string) (Parameter,error) {
   }
   return param,nil
 }
-func (p *Parameters) getId(paramname string,label string) (string,error) {
+func (p *Parameters) GetId(paramname string,label string) (string,error) {
   param, err := p.getParam(paramname)
   if err != nil {
     return "",err
@@ -37,7 +37,7 @@ func (p *Parameters) getId(paramname string,label string) (string,error) {
   }
   return val,nil
 }
-func (p *Parameters) getLabel(paramname string,id string) (string,error) {
+func (p *Parameters) GetLabel(paramname string,id string) (string,error) {
   param, err := p.getParam(paramname)
   if err != nil {
     return "",err
