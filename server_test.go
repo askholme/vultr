@@ -11,32 +11,32 @@ var createResponses = testutil.ResponseMap{
 var getResponses = testutil.ResponseMap{
   "/v1/server/list": makeResp(`{
       "576965": {
-          "SUBID": 576965,
-          "os": "CentOS 6 x64",
-          "ram": "4096 MB",
-          "disk": "Virtual 60 GB",
-          "main_ip": "123.123.123.123",
-          "vcpu_count": "2",
-          "location": "New Jersey",
-          "DCID": "1",
-          "default_password": "nreqnusibni",
-          "date_created": "2013-12-19 14:45:41",
-          "pending_charges": "46.67",
-          "status": "active",
-          "cost_per_month": 10.05,
-          "current_bandwidth_gb": 131.512,
-          "allowed_bandwidth_gb": 1000,
-          "netmask_v4": "255.255.255.248",
-          "gateway_v4": "123.123.123.1",
-          "power_status": "running",
-          "VPSPLANID": 28,
-          "v6_network": "2001:DB8:1000::",
-          "v6_main_ip": "2001:DB8:1000::100",
-          "v6_network_size": "64",
-          "label": "my new server",
-          "internal_ip": "10.99.0.10",
-          "kvm_url": "https://my.vultr.com/subs/novnc/api.php?data=eawxFVZw2mXnhGUV"
-      }
+      "SUBID":"576965",
+      "os":"Debian 7 x64 (wheezy)",
+      "ram":"768 MB",
+      "disk":"Virtual 15 GB",
+      "main_ip":"108.61.193.231",
+      "vcpu_count":"1",
+      "location":"Atlanta",
+      "DCID":"6",
+      "default_password":"fdsafsddsafsdcda!5",
+      "date_created":"2014-09-24 03:05:13",
+      "pending_charges":"0.02",
+      "status":"active",
+      "cost_per_month":"5.00",
+      "current_bandwidth_gb":0,
+      "allowed_bandwidth_gb":"1000",
+      "netmask_v4":"255.255.254.0",
+      "gateway_v4":"108.61.192.1",
+      "power_status":"running",
+      "VPSPLANID":"29",
+      "v6_network":"::",
+      "v6_main_ip":"",
+      "v6_network_size":"0",
+      "label":"",
+      "internal_ip":"10.99.0.10",
+      "kvm_url":"https:\/\/my.vultr.com\/subs\/vps\/novnc\/api.php?data=GFFWGRCSNVYUfdsaFDSADSAFADSSDAJZRVGQLQMRVXGMCBJU4FQNTUIZGHANTIG5RFURTLNY3UM5KJGI4GWK2MGVGUGZ2XI5EDQZKHKZYVOWJWOJETKTK2MJXE6QKQLJRFSRZXONZHUY2OLE2HK22JLEVXIZTVKVYXUZBLGRZHMZKTJZUDQMDWGFZEYZTUJVMGCWLHHBXUE2TWM5IXMVLOG4ZWU2JTMM2UM52PNFYVSUZTGNUWCOKTNBYEMODJKE6Q"
+   }
     }`)}
 var v4Responses = testutil.ResponseMap{
   "/v1/server/list_ipv4": makeResp(`{
