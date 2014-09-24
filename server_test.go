@@ -106,7 +106,7 @@ func (s *S) Test_GetServer(c *C) {
   server,err := s.client.GetServer("576965")
   c.Assert(err,IsNil)
   c.Assert(server,Not(IsNil))
-  c.Assert(server.Ram,Equals,"4096 MB")
+  c.Assert(server.Ram,Equals,"768 MB")
   c.Assert(server.PrivateIP,Equals,"10.99.0.10")
 }
 func (s *S) Test_GetIpV4(c *C) {
