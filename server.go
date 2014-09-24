@@ -5,7 +5,7 @@ import ("time"
 "fmt"
 )
 type Server struct {
-  Id            int     `json:"SUBID"`
+  Id            string     `json:"SUBID"`
   Os            string  `json:"os"`
   Ram           string  `json:"ram"`
   Disk          string  `json:"disk"`
