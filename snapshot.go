@@ -50,3 +50,18 @@ func (c *Client) GetSnapshot(snapshotId string) (*Snapshot,error) {
   }
   return nil,fmt.Errorf("Snapshot not found")
 }
+func (c *Client) GetSnapshotByLabel(snapshotLabel string) (*Snapshot,error) {
+  serverlist,err := c.GetSnapshots()
+  if err != nil {
+    return nil,err
+  }
+  //var s Server
+  for id,snapshot := range serverlist {
+    if snapshot.Description == snapshotLabel {
+      debug("%s did match in snapshot list",id)
+      return &snapshot,nil
+    }
+    debug("%s did not match in snapshot list",id)
+  }
+  return nil,fmt.Errorf("Snapshot not found")
+}

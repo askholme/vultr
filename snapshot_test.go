@@ -9,20 +9,18 @@ var snapshot_createResponses = testutil.ResponseMap{
   "/v1/snapshot/create": makeResp(`{ "SNAPSHOTID": "5359435d28b9a" }`),
 }
 var snapshot_getResponses = testutil.ResponseMap{
-  "/v1/snapshot/list": makeResp(`{
-    "5359435d28b9a": {
-        "SNAPSHOTID": "5359435d28b9a",
-        "date_created": "2014-04-18 12:40:40",
-        "description": "Test snapshot",
-        "size": "42949672960",
-        "status": "complete"
+  "/v1/snapshot/list": makeResp(`{ 
+  "5421de1839f36" : { "SNAPSHOTID" : "5421de1839f36",
+      "date_created" : "2014-09-23 16:54:48",
+      "description" : "test",
+      "size" : "16106127360",
+      "status" : "complete"
     },
-    "5359435dc1df3": {
-        "SNAPSHOTID": "5359435dc1df3",
-        "date_created": "2014-04-22 16:11:46",
-        "description": "",
-        "size": "10000000",
-        "status": "complete"
+  "5422e5396566a" : { "SNAPSHOTID" : "5422e5396566a",
+      "date_created" : "2014-09-24 11:37:29",
+      "description" : "mysnapsnot-1411572827",
+      "size" : "16106127360",
+      "status" : "complete"
     }
 }`)}
 
@@ -37,9 +35,9 @@ func (s *S) Test_CreateSnapshot(c *C) {
 
 func (s *S) Test_GetSnapshot(c *C) {
   testServer.ResponseMap(1,snapshot_getResponses)
-  snap,err := s.client.GetSnapshot("5359435dc1df3")
+  snap,err := s.client.GetSnapshot("5422e5396566a")
   c.Assert(err, IsNil)
-  c.Assert(snap.Size,Equals,"10000000")
+  c.Assert(snap.Size,Equals,"16106127360")
 }
 func (s *S) Test_GetSnapshot_err(c *C) {
   testServer.ResponseMap(1,snapshot_getResponses)
