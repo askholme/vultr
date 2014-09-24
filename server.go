@@ -18,7 +18,7 @@ type Server struct {
   Status        string  `json:"status"`
   Netmaskv4     string  `json:"netmask_v4"`
   Gatewayv4     string  `json:"gateway_v4"`
-  PlanID        int     `json:"VPSPLANID"`
+  PlanID        string     `json:"VPSPLANID"`
   IpV6          string  `json:"v6_main_ip"`
   NetmaskV6     string  `json:"v6_network"`
   SizeV6        string  `json:"v6_network_size"`
