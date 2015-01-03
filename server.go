@@ -137,7 +137,10 @@ func (c *Client) GetServers() (map[string]Server,error) {
   return serverlist,nil
 }
 func (c *Client) GetServer(search_id string) (*Server,error) {
-  serverlist,err := c.GetServers()
+  params := make(map[string]string)
+  params["SUBID"] = search_id
+  serverlist := make(map[string]Server)
+  err := c.RequestInterface(params,"/server/list","GET",&serverlist)
   if err != nil {
     return nil,err
   }
